@@ -1,0 +1,30 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Weather</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script>
+    function gettingJSON(){
+        document.write("jquery loaded");
+        $.getJSON("http://api.openweathermap.org/data/2.5/weather?q=London&APPID=df19b0d9ef13a60522ad5d19577f3766",function(json){
+            document.write(JSON.stringify(json));
+        });
+    }
+    </script>
+    <?php
+require __DIR__ . '/twilio-php-master/Twilio/autoload.php';
+use Twilio\Rest\Client;
+$client = new Client($sid, $token);
+$client->messages->create(
+ '+919474925889', // number to send to
+ array(
+ 'from' => '+919875546736', // your Twilio number
+ 'body' => "There’s something strange in my neighborhood. I don’t know who to call. Send help!"
+ )
+);?>
+</head>
+<body>
+<button id = "getIt" onclick = "gettingJSON()">Get JSON</button>
+</body>
+</html>
