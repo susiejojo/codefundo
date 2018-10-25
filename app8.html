@@ -49,16 +49,29 @@
         overflow: scroll;
         height: 174px;
       }
-      #che {
-        display:block ;
+      #che1 {
+        display:none ;
       }
-      #pun {
-        display: block;
+      #che2 {
+        display:none ;
       }
-      #ban {
-        display: block;
+      #che3 {
+        display:none ;
+      }
+      #pun1 {
+        display: none;
+      }
+      #pun2 {
+        display: none;
+      }
+      #ban1 {
+        display: none;
+      }
+      #ban2 {
+        display: none;
       }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
   </head>
   <body>
     <div id="map"></div>
@@ -70,21 +83,21 @@
       <br>
     <b>End:</b>
     <select id="end">
-      <option value="Pune">Pune</option>
-      <option value="Chennai">Chennai</option>
-      <option value="Bengaluru">Bengaluru</option>
+      <option value="Pune" onclick="pune()">Pune</option>
+      <option value="Chennai" onclick="chen()">Chennai</option>
+      <option value="Bengaluru" onclick="beng()">Bengaluru</option>
     </select>
   
     <b>Places affected:</b> <br>
     
     <select multiple id="waypoints">
-      <option value="Tirupati" id="che">Nellore</option>
-      <option value="Markapur" id="che">Ongole</option>
-      <option value="Suryapet" id="che">Nalgonda</option>
-      <option value="Osmanabad" id="pun">Solapur</option>
-      <option value="Vikarabad" id="pun">Sangareddi</option>
-      <option value="Raichur" id="ban">Kurnool</option>
-      <option value="Narapala" id="ban">Anantapur</option>
+      <option value="Tirupati" id="che1">Nellore</option>
+      <option value="Markapur" id="che2">Ongole</option>
+      <option value="Suryapet" id="che3">Nalgonda</option>
+      <option value="Osmanabad" id="pun1">Solapur</option>
+      <option value="Vikarabad" id="pun2">Sangareddi</option>
+      <option value="Raichur" id="ban1">Kurnool</option>
+      <option value="Narapala" id="ban2">Anantapur</option>
     </select>
     <br>
     
@@ -106,6 +119,51 @@
         document.getElementById('submit').addEventListener('click', function() {
           calculateAndDisplayRoute(directionsService, directionsDisplay);
         });
+      }
+      function pune(){
+        document.getElementById('pun1').style.display="block";
+        document.getElementById('pun2').style.display="block";
+        document.getElementById('che1').style.display="none";
+        document.getElementById('che2').style.display="none";
+        document.getElementById('che3').style.display="none";
+        document.getElementById('ban1').style.display="none";
+        document.getElementById('ban2').style.display="none";
+      }
+      function chen(){
+        // AJAX call to Weather API
+        $(document).ready(()=>{
+          var APIkey="fc0327598ba370a977a33d939e84e9ba";
+          if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition((position)=>{
+              let request=$.ajax({
+                url:'http://api.openweathermap.org/data/2.5/weather?q=Chennai,IN'+position.coords.latitude+'&lon='+position.coords.longitude+'&appid='+APIkey,
+                method: 'GET',
+                crossDomain: true,
+              });
+              request.done((data)=>{
+                console.log(data);
+                alert("Humidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature:"+data.main.temp);
+                alert(data.weather[0].main+" "+data.weather[0].description);
+              });
+            })  
+          }
+        });
+        document.getElementById('che1').style.display="block";
+        document.getElementById('che2').style.display="block";
+        document.getElementById('che3').style.display="block";
+        document.getElementById('ban1').style.display="none";
+        document.getElementById('ban2').style.display="none";
+         document.getElementById('pun1').style.display="none";
+        document.getElementById('pun2').style.display="none";       
+      }
+      function beng(){
+        document.getElementById('ban1').style.display="block";
+        document.getElementById('ban2').style.display="block";
+        document.getElementById('pun1').style.display="none";
+        document.getElementById('pun2').style.display="none";     
+        document.getElementById('che1').style.display="none";
+        document.getElementById('che2').style.display="none";
+        document.getElementById('che3').style.display="none";   
       }
 
       function calculateAndDisplayRoute(directionsService, directionsDisplay) {
