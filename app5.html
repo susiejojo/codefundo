@@ -31,6 +31,7 @@
         padding-left: 10px;
       }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
   </head>
   <body>
   <div id="floating-panel">
@@ -150,6 +151,24 @@
             zIndex: beach[3]
           });
         }
+      }
+
+      // AJAX call to Weather API
+      var APIkey="fc0327598ba370a977a33d939e84e9ba";
+      if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition((position)=>{
+          let request=$.ajax({
+            url:'http://api.openweathermap.org/data/2.5/weather?lat='+position.coords.latitude+'&lon='+position.coords.longitude+'&appid='+APIkey,
+            method: 'GET',
+            crossDomain: true,
+          });
+          request.done((data)=>{
+            console.log(data);
+            alert("Humidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature"+data.main.temp);
+            alert(data.weather[0].main+" "+data.weather[0].description);
+          });
+        })  
+        
       }
     </script>
     <script async defer
