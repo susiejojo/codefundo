@@ -121,6 +121,20 @@
         });
       }
       function pune(){
+         // AJAX call to Weather API
+        $(document).ready(()=>{
+          var APIkey="fc0327598ba370a977a33d939e84e9ba";
+              let request=$.ajax({
+                url:'http://api.openweathermap.org/data/2.5/weather?q=Pune,IN'+'&appid='+APIkey,
+                method: 'GET',
+                crossDomain: true,
+              });
+              request.done((data)=>{
+                console.log(data);
+                alert("Humidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature:"+data.main.temp);
+                alert(data.weather[0].main+":"+data.weather[0].description);
+              });
+            })  
         document.getElementById('pun1').style.display="block";
         document.getElementById('pun2').style.display="block";
         document.getElementById('che1').style.display="none";
@@ -133,21 +147,18 @@
         // AJAX call to Weather API
         $(document).ready(()=>{
           var APIkey="fc0327598ba370a977a33d939e84e9ba";
-          if(navigator.geolocation){
-            navigator.geolocation.getCurrentPosition((position)=>{
               let request=$.ajax({
-                url:'http://api.openweathermap.org/data/2.5/weather?q=Chennai,IN'+position.coords.latitude+'&lon='+position.coords.longitude+'&appid='+APIkey,
+                url:'http://api.openweathermap.org/data/2.5/weather?q=Chennai,IN'+'&appid='+APIkey,
                 method: 'GET',
                 crossDomain: true,
               });
               request.done((data)=>{
                 console.log(data);
                 alert("Humidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature:"+data.main.temp);
-                alert(data.weather[0].main+" "+data.weather[0].description);
+                alert(data.weather[0].main+":"+data.weather[0].description);
               });
             })  
-          }
-        });
+          
         document.getElementById('che1').style.display="block";
         document.getElementById('che2').style.display="block";
         document.getElementById('che3').style.display="block";
@@ -157,6 +168,20 @@
         document.getElementById('pun2').style.display="none";       
       }
       function beng(){
+        // AJAX call to Weather API
+        $(document).ready(()=>{
+          var APIkey="fc0327598ba370a977a33d939e84e9ba";
+              let request=$.ajax({
+                url:'http://api.openweathermap.org/data/2.5/weather?q=Bangalore,IN'+'&appid='+APIkey,
+                method: 'GET',
+                crossDomain: true,
+              });
+              request.done((data)=>{
+                console.log(data);
+                alert("Humidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature:"+data.main.temp);
+                alert(data.weather[0].main+":"+data.weather[0].description);
+              });
+            })  
         document.getElementById('ban1').style.display="block";
         document.getElementById('ban2').style.display="block";
         document.getElementById('pun1').style.display="none";
