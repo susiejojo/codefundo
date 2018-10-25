@@ -49,6 +49,15 @@
         overflow: scroll;
         height: 174px;
       }
+      #che {
+        display:block ;
+      }
+      #pun {
+        display: block;
+      }
+      #ban {
+        display: block;
+      }
     </style>
   </head>
   <body>
@@ -58,25 +67,27 @@
     <b>Start:</b>
     <select id="start">
       <option value="Hyderabad">Hyderabad</option></select>
-    <br>
-    <b>Places affected:</b> <br>
-    <br>
-    <select multiple id="waypoints">
-      <option value="Tirupati">Nellore</option>
-      <option value="Chirala">Ongole</option>
-      <option value="Guntur">Nalgonda</option>
-      <option value="Osmanabad">Solapur</option>
-      <option value="Vikarabad">Sangareddi</option>
-      <option value="Kurnool">Kurnool</option>
-      <option value="Anantapur">Anantapur</option>
-    </select>
-    <br>
+      <br>
     <b>End:</b>
     <select id="end">
       <option value="Pune">Pune</option>
       <option value="Chennai">Chennai</option>
       <option value="Bengaluru">Bengaluru</option>
     </select>
+  
+    <b>Places affected:</b> <br>
+    
+    <select multiple id="waypoints">
+      <option value="Tirupati" id="che">Nellore</option>
+      <option value="Markapur" id="che">Ongole</option>
+      <option value="Suryapet" id="che">Nalgonda</option>
+      <option value="Osmanabad" id="pun">Solapur</option>
+      <option value="Vikarabad" id="pun">Sangareddi</option>
+      <option value="Raichur" id="ban">Kurnool</option>
+      <option value="Narapala" id="ban">Anantapur</option>
+    </select>
+    <br>
+    
     <br>
       <input type="submit" id="submit">
     </div>
