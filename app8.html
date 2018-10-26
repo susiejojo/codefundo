@@ -1,295 +1,179 @@
+
 <!DOCTYPE html>
 <html>
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <title>Travel</title>
+    <title>Current location</title>
     <style>
-      #right-panel {
-        font-family: 'Roboto','sans-serif';
-        line-height: 30px;
-        padding-left: 10px;
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
       }
-
-      #right-panel select, #right-panel input {
-        font-size: 15px;
-      }
-
-      #right-panel select {
-        width: 100%;
-      }
-
-      #right-panel i {
-        font-size: 12px;
-      }
+      /* Optional: Makes the sample page fill the window. */
       html, body {
         height: 100%;
         margin: 0;
         padding: 0;
       }
-      #map {
-        height: 100%;
-        float: left;
-        width: 70%;
-        height: 100%;
-      }
-      #right-panel {
-        margin: 20px;
-        border-width: 2px;
-        width: 20%;
-        height: 400px;
-        float: left;
-        text-align: left;
-        padding-top: 0;
-      }
-      #directions-panel {
-        margin-top: 10px;
-        background-color: #FFEE77;
-        padding: 10px;
-        overflow: scroll;
-        height: 174px;
-      }
-      #che1 {
-        display:none ;
-      }
-      #che2 {
-        display:none ;
-      }
-      #che3 {
-        display:none ;
-      }
-      #pun1 {
-        display: none;
-      }
-      #pun2 {
-        display: none;
-      }
-      #ban1 {
-        display: none;
-      }
-      #ban2 {
-        display: none;
+      #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
       }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
   </head>
   <body>
-    <div id="map"></div>
-    <div id="right-panel">
-    <div>
-
+  <div id="floating-panel">
     <b>Start:</b>
     <select id="start">
-      <option value="Hyderabad">Hyderabad</option></select>
-      <br>
-    <b>End:</b>
-    <!-- Destinations-->
+      <option value="Iiit Hyderabad, Gachibowli, Hyderabad, Telangana">Current location</option>
+    </select>
+    <b>Destination:</b>
     <select id="end">
-      <option value="Pune" onclick="pune()">Pune</option>
-      <option value="Chennai" onclick="chen()">Chennai</option>
-      <option value="Bengaluru" onclick="beng()">Bengaluru</option>
+      <option value="Continental Hospitals, Plot No. 3, Rd Number 2, Financial District, Nanakram Guda, Hyderabad, Telangana 500035">Hospital1 </option>
+      <option value="Gachibowli Police Station, BHEL Rd, Indira Nagar, Gachibowli, Hyderabad, Telangana">
+      Police Station 1 </option>
+      <option value="CARE Hospitals, Old Mumbai Highway, Jayabheri Pine Valley, HITEC City, Hyderabad, Telangana">Hospital 2 </option>
+      <option value="Himagiri Hospitals">Hospital 3 </option>
+      <option value="Telangana State Disaster Response & Fire Services">Disaster Management Centre</option>  
+      <option value="nampally police station">Police Station 2</option> 
+      <option value="Osmania Government General Hospital">Hospital 4</option>
     </select>
-  
-    <b>Places affected:</b> <br>
-
-    Click or Ctrl+Click on multiple options to avoid that waypoint
-    <br>
-    <select multiple id="waypoints">
-    <!--Waypoints and alternate routes-->
-      <option value="Tirupati" id="che1">Nellore</option>
-      <option value="Markapur" id="che2">Ongole</option>
-      <option value="Suryapet" id="che3">Nalgonda</option>
-      <option value="Osmanabad" id="pun1">Solapur</option>
-      <option value="Vikarabad" id="pun2">Sangareddi</option>
-      <option value="Raichur" id="ban1">Kurnool</option>
-      <option value="Narapala" id="ban2">Anantapur</option>
-    </select>
-    <br>
-    
-    <br>
-      <input type="submit" id="submit">
     </div>
-    <div id="directions-panel"></div>
+    <div id="map">
     </div>
     <script>
-      function initMap()
-       {
+    var pos;
+      function initMap() {
         var directionsService = new google.maps.DirectionsService;
         var directionsDisplay = new google.maps.DirectionsRenderer;
         var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 6,
-          center: {lat: 17.3850, lng: 78.4867}
+          zoom: 12,
+          center: {lat: 17.4325, lng: 78.4070}
         });
         directionsDisplay.setMap(map);
-
-        document.getElementById('submit').addEventListener('click', function() {
-          calculateAndDisplayRoute(directionsService, directionsDisplay);
-        });
-      }
-      function pune(){
-         // AJAX call to Weather API for Pune
-        $(document).ready(()=>{
-          var APIkey="fc0327598ba370a977a33d939e84e9ba";
-              let request=$.ajax({
-                url:'http://api.openweathermap.org/data/2.5/weather?q=Pune,IN'+'&appid='+APIkey,
-                method: 'GET',
-                crossDomain: true,
-              });
-              request.done((data)=>{
-                console.log(data);
-                //weather info 
-                alert("Weather at your destination:\nHumidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature:"+data.main.temp);
-                alert(data.weather[0].main+":"+data.weather[0].description);
-                //alert in case of poor weather at destination or at waypoints
-                if (data.main.pressure<1000)
-                {
-                  alert("Low Pressure: Impending cyclones in Pune\n Cancel your trip!");
-                }
-                else{
-                alert("Bad weather conditions at Solapur & Sangareddi: take alternate safe routes!!");
-                if (data.weather[0].description=="drizzle" || data.weather[0].description=="light rain" || data.weather[0].description=="moderate rain" || data.weather[0].description=="proximity shower rain")
-                {
-                  alert("Drizzle: Carry your umbrella");
-                }
-                if (data.weather[0],description=="light snow")
-                {
-                  alert("Snow: Carry your coat!!!");
-                }}
-              });
-            })  
-        //to hide dropdown options based on choice of destination
-        document.getElementById('pun1').style.display="block";
-        document.getElementById('pun2').style.display="block";
-        document.getElementById('che1').style.display="none";
-        document.getElementById('che2').style.display="none";
-        document.getElementById('che3').style.display="none";
-        document.getElementById('ban1').style.display="none";
-        document.getElementById('ban2').style.display="none";
-        
-      }
-      function chen(){
-        // AJAX call to Weather API at Chennai
-        $(document).ready(()=>{
-          var APIkey="fc0327598ba370a977a33d939e84e9ba";
-              let request=$.ajax({
-                url:'http://api.openweathermap.org/data/2.5/weather?q=Chennai,IN'+'&appid='+APIkey,
-                method: 'GET',
-                crossDomain: true,
-              });
-              request.done((data)=>{
-                console.log(data);
-                //weather info 
-                alert("Weather at your destination:\nHumidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature:"+data.main.temp);
-                alert(data.weather[0].main+":"+data.weather[0].description);
-                //alerts in case of poor weather at destination or waypoints
-                if (data.main.pressure<1000)
-                {
-                  alert("Low Pressure: Impending cyclones in Chennai!\n Cancel your trip!");
-                }
-                else{
-                alert("Bad weather conditions at Nellore, Nalgonda & Ongole: take alternate safe routes!!");
-                if (data.weather[0].description=="drizzle" || data.weather[0].description=="light rain" || data.weather[0].description=="moderate rain" || data.weather[0].description=="proximity shower rain")
-                {
-                  alert("Drizzle: Carry your umbrella");
-                }
-                if (data.weather[0],description=="light snow")
-                {
-                  alert("Snow: Carry your coat!!!");
-                }}
-              });
-            })  
-          //to hide dropdown options depending on choice of destination
-        document.getElementById('che1').style.display="block";
-        document.getElementById('che2').style.display="block";
-        document.getElementById('che3').style.display="block";
-        document.getElementById('ban1').style.display="none";
-        document.getElementById('ban2').style.display="none";
-         document.getElementById('pun1').style.display="none";
-        document.getElementById('pun2').style.display="none";  
-        
-      }
-      function beng(){
-        // AJAX call to Weather API in Bengaluru
-        $(document).ready(()=>{
-          var APIkey="fc0327598ba370a977a33d939e84e9ba";
-              let request=$.ajax({
-                url:'http://api.openweathermap.org/data/2.5/weather?q=Bangalore,IN'+'&appid='+APIkey,
-                method: 'GET',
-                crossDomain: true,
-              });
-              request.done((data)=>{
-                console.log(data);
-                //Weather info
-                alert("Weather at your destination:\nHumidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature:"+data.main.temp+"\nWind Speed:"+data.wind.speed);
-                alert(data.weather[0].main+":"+data.weather[0].description);
-                //alerts in case of bad weather at destination or waypoints
-                if (data.main.pressure<1000)
-                {
-                  alert("Low Pressure: Impending cyclones in Bengaluru\n Cancel your trip!");
-                }
-                else{
-                alert("Bad weather conditions at Kurnool  & Anantapur: take alternate safe routes!!");
-                if (data.weather[0].description=="drizzle" || data.weather[0].description=="light rain" || data.weather[0].description=="moderate rain" || data.weather[0].description=="proximity shower rain")
-                {
-                  alert("Drizzle: Carry your umbrella");
-                }
-                if (data.weather[0],description=="light snow")
-                {
-                  alert("Snow: Carry your coat!!!");
-                }}
-              });
-            })  
-        //to hide dropdown options based on choice of destination
-        document.getElementById('ban1').style.display="block";
-        document.getElementById('ban2').style.display="block";
-        document.getElementById('pun1').style.display="none";
-        document.getElementById('pun2').style.display="none";     
-        document.getElementById('che1').style.display="none";
-        document.getElementById('che2').style.display="none";
-        document.getElementById('che3').style.display="none";  
-      }
-      //displays route 
-      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-        var waypts = [];
-        var checkboxArray = document.getElementById('waypoints');
-        for (var i = 0; i < checkboxArray.length; i++) {
-          if (checkboxArray.options[i].selected) {
-            waypts.push({
-              location: checkboxArray[i].value,
-              stopover: true
-            });
-          }
+        setMarkers(map);
+        infoWindow = new google.maps.InfoWindow;
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+              pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
+            var bounds = new google.maps.LatLngBounds();
+            infoWindow.setPosition(pos);
+            infoWindow.setContent('You are here.');
+            infoWindow.open(map);
+            map.setCenter(pos);
+          }, function() {
+            handleLocationError(true, infoWindow, map.getCenter());
+          });
+        } else {
+          // Browser doesn't support Geolocation
+          handleLocationError(false, infoWindow, map.getCenter());
         }
-
+      
+      // Loop through the results array and place a marker for each
+      // set of coordinates.
+      
+        var onChangeHandler = function() {
+          calculateAndDisplayRoute(directionsService, directionsDisplay);
+        };
+        document.getElementById('end').addEventListener('change', onChangeHandler);
+        map.fitBounds(bounds);
+          }
+      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         directionsService.route({
-          origin: document.getElementById('start').value,
+          origin: pos,
           destination: document.getElementById('end').value,
-          waypoints: waypts,
-          optimizeWaypoints: true,
           travelMode: 'DRIVING'
         }, function(response, status) {
           if (status === 'OK') {
             directionsDisplay.setDirections(response);
-            var route = response.routes[0];
-            var summaryPanel = document.getElementById('directions-panel');
-            summaryPanel.innerHTML = '';
-            // For each route, display summary information.
-            for (var i = 0; i < route.legs.length; i++) {
-              var routeSegment = i + 1;
-              summaryPanel.innerHTML += '<b>Route Segment: ' + routeSegment +
-                  '</b><br>';
-              summaryPanel.innerHTML += route.legs[i].start_address + ' to ';
-              summaryPanel.innerHTML += route.legs[i].end_address + '<br>';
-              summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
-            }
           } else {
             window.alert('Directions request failed due to ' + status);
           }
         });
       }
+        var markers1 = [
+        ['Continental Hospitals', 17.4174, 78.3394, 4],
+        ['Care Hospitals', 17.4127, 78.4503, 5],
+        ['Himagiri Hospitals', 17.4422, 78.3587, 3],
+        ['Gachibowli Police Station', 17.4435, 78.3537, 2],
+        ['World Congress on Disaster Management (WCDM)',17.4077,78.4740],
+        ['Nampally Police Station', 17.3988, 78.4578, 7],
+        ['Osmamia Hospitals', 17.3726, 78.4738, 6]
+      ];
+      function setMarkers(map) {
+        // Adds markers to the map.
+        // Marker sizes are expressed as a Size of X,Y where the origin of the image
+        // (0,0) is located in the top left of the image.
+        // Origins, anchor positions and coordinates of the marker increase in the X
+        // direction to the right and in the Y direction down.
+        var image = {
+          url: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png',
+          // This marker is 20 pixels wide by 32 pixels high.
+          size: new google.maps.Size(20, 32),
+          // The origin for this image is (0, 0).
+          origin: new google.maps.Point(0, 0),
+          // The anchor for this image is the base of the flagpole at (0, 32).
+          anchor: new google.maps.Point(0, 32)
+        };
+        // Shapes define the clickable region of the icon. The type defines an HTML
+        // <area> element 'poly' which traces out a polygon as a series of X,Y points.
+        // The final coordinate closes the poly by connecting to the first coordinate.
+        var shape = {
+          coords: [1, 1, 1, 20, 18, 20, 18, 1],
+          type: 'poly'
+        };
+        for (var i = 0; i < markers1.length; i++) {
+          var beach = markers1[i];
+          var marker = new google.maps.Marker({
+            position: {lat: beach[1], lng: beach[2]},
+            map: map,
+            icon: image,
+            shape: shape,
+            title: beach[0],
+            zIndex: beach[3]
+          });
+        }
+      }
+      // AJAX call to Weather API
+        $(document).ready(()=>{
+          var APIkey="fc0327598ba370a977a33d939e84e9ba";
+          if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition((position)=>{
+              let request=$.ajax({
+                url:'http://api.openweathermap.org/data/2.5/weather?lat='+position.coords.latitude+'&lon='+position.coords.longitude+'&appid='+APIkey,
+                method: 'GET',
+                crossDomain: true,
+              });
+              request.done((data)=>{
+                console.log(data);
+                alert("Humidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature:"+data.main.temp);
+                alert(data.weather[0].main+" "+data.weather[0].description);
+
+
+              });
+            })  
+          }
+        });
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDg6OT7vJbj5qurLRyfw6T9LQmJXG2_LBk&callback=initMap">
     </script>
   </body>
 </html>
+
