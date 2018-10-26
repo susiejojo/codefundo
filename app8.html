@@ -131,8 +131,16 @@
               });
               request.done((data)=>{
                 console.log(data);
-                alert("Humidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature:"+data.main.temp);
+                alert("Weather at your destination:\nHumidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature:"+data.main.temp);
                 alert(data.weather[0].main+":"+data.weather[0].description);
+                if (data.main.pressure<1000)
+                {
+                  alert("Low Pressure: Impending cyclones");
+                }
+                if (data.weather[0],description=="drizzle")
+                {
+                  alert("Drizzle: Carry your umbrella");
+                }
               });
             })  
         document.getElementById('pun1').style.display="block";
@@ -142,6 +150,7 @@
         document.getElementById('che3').style.display="none";
         document.getElementById('ban1').style.display="none";
         document.getElementById('ban2').style.display="none";
+        
       }
       function chen(){
         // AJAX call to Weather API
@@ -154,8 +163,16 @@
               });
               request.done((data)=>{
                 console.log(data);
-                alert("Humidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature:"+data.main.temp);
+                alert("Weather at your destination:\nHumidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature:"+data.main.temp);
                 alert(data.weather[0].main+":"+data.weather[0].description);
+                if (data.main.pressure<1000)
+                {
+                  alert("Low Pressure: Impending cyclones");
+                }
+                if (data.weather[0],description=="drizzle")
+                {
+                  alert("Drizzle: Carry your umbrella");
+                }
               });
             })  
           
@@ -165,7 +182,8 @@
         document.getElementById('ban1').style.display="none";
         document.getElementById('ban2').style.display="none";
          document.getElementById('pun1').style.display="none";
-        document.getElementById('pun2').style.display="none";       
+        document.getElementById('pun2').style.display="none";  
+        
       }
       function beng(){
         // AJAX call to Weather API
@@ -178,8 +196,16 @@
               });
               request.done((data)=>{
                 console.log(data);
-                alert("Humidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature:"+data.main.temp);
+                alert("Weather at your destination:\nHumidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature:"+data.main.temp+"\nWind Speed:"+data.wind.speed);
                 alert(data.weather[0].main+":"+data.weather[0].description);
+                if (data.main.pressure<1000)
+                {
+                  alert("Low Pressure: Impending cyclones");
+                }
+                if (data.weather[0],description=="drizzle")
+                {
+                  alert("Drizzle: Carry your umbrella");
+                }
               });
             })  
         document.getElementById('ban1').style.display="block";
@@ -188,7 +214,7 @@
         document.getElementById('pun2').style.display="none";     
         document.getElementById('che1').style.display="none";
         document.getElementById('che2').style.display="none";
-        document.getElementById('che3').style.display="none";   
+        document.getElementById('che3').style.display="none";  
       }
 
       function calculateAndDisplayRoute(directionsService, directionsDisplay) {
