@@ -1,0 +1,156 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lobster">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
+
+    <style>
+    body{
+      background-color: #dddddd;
+    }
+    #head{
+      margin-top: 200px;
+      text-align: center;
+      font-family: Lobster;
+      font-size: 96px;
+    }
+    #desc{
+      margin-left: 28%;
+      margin-right: 28%;
+      word-wrap: break-word;
+      font-size: 24px;
+      font-family: Lato;
+    }
+    .parallax_container1 {
+    background-color: #dddddd;
+    height: 100%;
+    width: 100%;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 0px;
+    }
+    .parallax_container2 {
+    background-color: #dd0000;
+    height: 100%;
+    width:100%;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding:0px;
+    }
+    #info{
+      margin-top: 25%;
+      margin-bottom: 25%;
+    }
+    .button {
+      display: inline-block;
+      border-radius: 0px;
+      background-color: #f4511e;
+      border: none;
+      color: #FFFFFF;
+      text-align: center;
+      font-size: 28px;
+      padding: 20px;
+      width: 420px;
+      transition: all 0.5s;
+      cursor: pointer;
+      margin-left: 28%;
+      float: left;
+    }
+    #button2{
+      margin-left: 0px;
+      background-color: green;
+
+    }
+    #button3{
+
+    }
+
+    .button span {
+      cursor: pointer;
+      display: inline-block;
+      position: relative;
+      transition: 0.5s;
+    }
+
+    .button span:after {
+      content: '\00bb';
+      position: absolute;
+      opacity: 0;
+      top: 0;
+      right: -20px;
+      transition: 0.5s;
+    }
+    .button:hover {
+
+    opacity: 1;
+    -webkit-transform: scale(1, 1);
+    transform: scale(1, 1);
+    }
+
+    .button:hover span {
+      padding-right: 25px;
+    }
+
+    .button:hover span:after {
+      opacity: 1;
+      right: 0;
+    }
+    </style>
+  </head>
+  <body>
+    <h1 id="head">Welcome to Sun-Day</h1>
+    <div id="desc">
+      <br>
+      What if disaster strikes right where you are now? What if you do not know where you can seek help? Also, how do you know you are safe while travelling to another place? Go ahead and explore our app to find out how we plan to keep you safe in times of natural calamities!!
+      <br>
+    </div>
+    <br><br>
+    <button class="button" style="vertical-align:middle" onclick="location.href='file:///home/tr/Desktop/weather/app2.html';"><span>Current Location</span></button>
+    <button class="button" style="vertical-align:middle" id="button2"onclick="location.href='file:///home/tr/Desktop/weather/app.html';"><span>Travel</span></button>
+    <br><br>
+    <button class="button" style="vertical-align:middle" id="button3" onclick="weather()"><span>Know Weather</span></button>
+
+    <script>
+    // Try HTML5 geolocation.
+    function weather(){
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(function(position) {
+          pos = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        };
+        var bounds = new google.maps.LatLngBounds();
+        infoWindow.setPosition(pos);
+        infoWindow.setContent('You are here.');
+        infoWindow.open(map);
+        map.setCenter(pos);
+      }, function() {
+        handleLocationError(true, infoWindow, map.getCenter());
+      });
+    } else {
+      // Browser doesn't support Geolocation
+      handleLocationError(false, infoWindow, map.getCenter());
+    }}
+    // AJAX call to Weather API
+      $(document).ready(()=>{
+        var APIkey="fc0327598ba370a977a33d939e84e9ba";
+        if(navigator.geolocation){
+          navigator.geolocation.getCurrentPosition((position)=>{
+            let request=$.ajax({
+              url:'http://api.openweathermap.org/data/2.5/weather?lat='+position.coords.latitude+'&lon='+position.coords.longitude+'&appid='+APIkey,
+              method: 'GET',
+              crossDomain: true,
+            });
+            request.done((data)=>{
+              console.log(data);
+              alert("Humidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature:"+data.main.temp);
+              alert(data.weather[0].main+" "+data.weather[0].description);
+            });
+          })
+        }
+      });
+  </body>
+</html>
