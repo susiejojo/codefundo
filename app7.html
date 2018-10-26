@@ -4,7 +4,7 @@
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <title>Complex Marker Icons</title>
+    <title>Current location</title>
     <style>
       /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
@@ -43,10 +43,12 @@
     <select id="end">
       <option value="Continental Hospitals, Plot No. 3, Rd Number 2, Financial District, Nanakram Guda, Hyderabad, Telangana 500035">Hospital1 </option>
       <option value="Gachibowli Police Station, BHEL Rd, Indira Nagar, Gachibowli, Hyderabad, Telangana">
-      Police Station </option>
+      Police Station 1 </option>
       <option value="CARE Hospitals, Old Mumbai Highway, Jayabheri Pine Valley, HITEC City, Hyderabad, Telangana">Hospital 2 </option>
       <option value="Himagiri Hospitals">Hospital 3 </option>
       <option value="Telangana State Disaster Response & Fire Services">Disaster Management Centre</option>  
+      <option value="nampally police station">Police Station 2</option> 
+      <option value="Osmania Government General Hospital">Hospital 4</option>
     </select>
     </div>
     <div id="map"></div>
@@ -109,7 +111,9 @@
         ['Care Hospitals', 17.4127, 78.4503, 5],
         ['Himagiri Hospitals', 17.4422, 78.3587, 3],
         ['Gachibowli Police Station', 17.4435, 78.3537, 2],
-        ['World Congress on Disaster Management (WCDM)',17.4077,78.4740]
+        ['World Congress on Disaster Management (WCDM)',17.4077,78.4740],
+        ['Nampally Police Station', 17.3988, 78.4578, 7],
+        ['Osmamia Hospitals', 17.3726, 78.4738, 6]
       ];
       function setMarkers(map) {
         // Adds markers to the map.
@@ -146,22 +150,25 @@
         }
       }
       // AJAX call to Weather API
-      var APIkey="fc0327598ba370a977a33d939e84e9ba";
-      if(navigator.geolocation){
-        navigator.geolocation.getCurrentPosition((position)=>{
-          let request=$.ajax({
-            url:'http://api.openweathermap.org/data/2.5/weather?lat='+position.coords.latitude+'&lon='+position.coords.longitude+'&appid='+APIkey,
-            method: 'GET',
-            crossDomain: true,
-          });
-          request.done((data)=>{
-            console.log(data);
-            alert("Humidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature"+data.main.temp);
-            alert(data.weather[0].main+" "+data.weather[0].description);
-          });
-        })  
-        
-      }
+        $(document).ready(()=>{
+          var APIkey="fc0327598ba370a977a33d939e84e9ba";
+          if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition((position)=>{
+              let request=$.ajax({
+                url:'http://api.openweathermap.org/data/2.5/weather?lat='+position.coords.latitude+'&lon='+position.coords.longitude+'&appid='+APIkey,
+                method: 'GET',
+                crossDomain: true,
+              });
+              request.done((data)=>{
+                console.log(data);
+                alert("Humidity:"+data.main.humidity+"\nPressure:"+data.main.pressure+"\nTemperature:"+data.main.temp);
+                alert(data.weather[0].main+" "+data.weather[0].description);
+
+
+              });
+            })  
+          }
+        });
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDg6OT7vJbj5qurLRyfw6T9LQmJXG2_LBk&callback=initMap">
